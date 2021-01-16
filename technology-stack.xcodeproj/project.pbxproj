@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BA3F45725B27717004778D7 /* TitleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA3F45625B27717004778D7 /* TitleBar.swift */; };
 		0BB26BDC25B1196D00239130 /* technology_stackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB26BDB25B1196D00239130 /* technology_stackApp.swift */; };
 		0BB26BDE25B1196D00239130 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB26BDD25B1196D00239130 /* ContentView.swift */; };
 		0BB26BE025B1196E00239130 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BB26BDF25B1196E00239130 /* Assets.xcassets */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0BA3F45625B27717004778D7 /* TitleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBar.swift; sourceTree = "<group>"; };
 		0BB26BD825B1196D00239130 /* technology-stack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "technology-stack.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BB26BDB25B1196D00239130 /* technology_stackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = technology_stackApp.swift; sourceTree = "<group>"; };
 		0BB26BDD25B1196D00239130 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				0BB26BE425B1196E00239130 /* Info.plist */,
 				0BB26BE125B1196E00239130 /* Preview Content */,
 				0BB26BEB25B119D000239130 /* Stock.swift */,
+				0BA3F45625B27717004778D7 /* TitleBar.swift */,
 			);
 			path = "technology-stack";
 			sourceTree = "<group>";
@@ -141,6 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BA3F45725B27717004778D7 /* TitleBar.swift in Sources */,
 				0BB26BDE25B1196D00239130 /* ContentView.swift in Sources */,
 				0BB26BDC25B1196D00239130 /* technology_stackApp.swift in Sources */,
 				0BB26BEC25B119D000239130 /* Stock.swift in Sources */,
