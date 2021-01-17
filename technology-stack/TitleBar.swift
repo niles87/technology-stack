@@ -10,6 +10,7 @@ import SwiftUI
 struct TitleBar: View {
     @State var search: String = ""
     @State private var isEditing = false
+    @Binding var cart: [Item]
     var body: some View {
         HStack {
             Text("Tech Stack")
@@ -22,14 +23,20 @@ struct TitleBar: View {
                 
             }.autocapitalization(.none)
             .disableAutocorrection(true)
+            .frame(width: 150)
             .border(Color(UIColor.separator))
             Button(action: {
                 print("clicking search")
             }, label: {
                 Image(systemName: "magnifyingglass")
             })
+            NavigationLink(
+                destination: CartView(cart: $cart),
+                label: {
+                    Image(systemName: "cart.circle")
+                })
         }
-        .padding()
+        .padding(5)
         .frame(width: UIScreen.main.bounds.width, height: 50)
         .background(Color(.quaternaryLabel))
     }
