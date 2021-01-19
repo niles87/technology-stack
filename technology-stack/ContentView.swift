@@ -9,15 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
-    var items = [Item(id: 0, name: "Apple Watch", price: 10.00, image: "applewatch", amount: 10), Item(id: 1, name: "Iphone", price: 9.99, image: "iphone", amount: 20), Item(id: 2, name: "Macbook Air", price: 5.00, image: "laptopcomputer", amount: 10), Item(id: 3, name: "Scanner", price: 7.00, image: "scanner", amount: 10), Item(id: 4, name: "TV", price: 30.00, image: "tv", amount: 10), Item(id: 5, name: "4k TV", price: 20.00, image: "4k.tv", amount: 20)]
-    @State var cart:[Item] = []
+    @State var items = [Item(id: 0, name: "Apple Watch", price: 10.00, image: "applewatch", amount: 10), Item(id: 1, name: "Iphone", price: 9.99, image: "iphone", amount: 20), Item(id: 2, name: "Macbook Air", price: 5.00, image: "laptopcomputer", amount: 10), Item(id: 3, name: "Scanner", price: 7.00, image: "scanner", amount: 10), Item(id: 4, name: "TV", price: 30.00, image: "tv", amount: 10), Item(id: 5, name: "4k TV", price: 20.00, image: "4k.tv", amount: 20)]
+    @State var searchedItems = [Item(id: 0, name: "Apple Watch", price: 10.00, image: "applewatch", amount: 10), Item(id: 1, name: "Iphone", price: 9.99, image: "iphone", amount: 20), Item(id: 2, name: "Macbook Air", price: 5.00, image: "laptopcomputer", amount: 10), Item(id: 3, name: "Scanner", price: 7.00, image: "scanner", amount: 10), Item(id: 4, name: "TV", price: 30.00, image: "tv", amount: 10), Item(id: 5, name: "4k TV", price: 20.00, image: "4k.tv", amount: 20)]
+    @State var cart: [Item] = []
     var body: some View {
         NavigationView {
             VStack {
-                TitleBar(cart: $cart)
+                TitleBar(cart: $cart, itemList: $items, searchedItems: $searchedItems)
                 ScrollView {
                     LazyVGrid(columns: columns) {
-                        ForEach(items, id: \.self.id) {item in
+                        ForEach(searchedItems, id: \.self.id) {item in
                             NavigationLink(
                                 destination: ItemView(cart: $cart, item: item),
                                 label: {
@@ -54,7 +55,7 @@ struct ItemView: View {
     var body: some View {
         ZStack {
             VStack {
-                TitleBar(cart: $cart)
+                NavBar(cart: $cart)
                 Spacer()
                 Image(systemName: item.image)
                     .resizable()
