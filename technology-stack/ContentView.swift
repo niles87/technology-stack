@@ -85,8 +85,9 @@ struct ItemView: View {
     }
     
     func addToCart(item: Item) {
-        
-        cart.append(item)
+        if item.amount > 0 {
+            cart.append(item)
+        }
     }
 }
 
@@ -96,21 +97,33 @@ struct CartView: View {
     var body: some View {
         ScrollView {
             VStack {
+                LazyVGrid (columns: column) {
+                    ForEach(cart, id: \.self.id) { item in
+                        HStack {
+                            Image(systemName: item.image)
+                            Text("\(item.amount)")
+                            Text(item.name)
+                            Text(String(format: "$%.2f", (Double(item.amount) * item.price)))
+                            Spacer()
+                            Button(action: {
+                                deleteItem()
+                            }, label: {
+                                Text("X").font(.system(size: 15, weight: .heavy))
+                            })
+                            .frame(width: 20, height: 20)
+                            .background(Color(.red))
+                            .foregroundColor(.white)
+                            .cornerRadius(10.0)
+                        }.padding()
+                    }
+                }
+                Spacer()
+                Text(String(format: "Total: $%.2f", getTotal()))
                 NavigationLink(
                     destination: CheckoutView(total: getTotal()),
                     label: {
                         Text("Checkout")
                     })
-                LazyVGrid (columns: column) {
-                    ForEach(cart, id: \.self.id) { item in
-                        HStack {
-                            Image(systemName: item.image)
-                            Text(item.name)
-                            Text("\(item.amount)")
-                            Text(String(format: "$%.2f", (Double(item.amount) * item.price)))
-                        }
-                    }
-                }
             }
         }.navigationTitle("Cart")
     }
@@ -121,5 +134,9 @@ struct CartView: View {
             total += (Double(item.amount) * item.price)
         }
         return total
+    }
+    
+    func deleteItem() {
+        print("removing item")
     }
 }
