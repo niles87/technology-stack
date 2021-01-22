@@ -70,7 +70,7 @@ struct ItemView: View {
                     Button(action: {
                         self.addToCart(item: Item(id: item.id, name: item.name, price: item.price, image: item.image, amount: count))
                     }, label: {
-                        Text("Add to cart")
+                        Image(systemName: "cart.fill.badge.plus")
                     })
                 }
                 Text(item.name).font(.title)
