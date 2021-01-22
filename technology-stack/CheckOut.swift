@@ -12,14 +12,23 @@ struct CheckoutView: View {
     var total: Double
     var body: some View {
         VStack {
-            Text("Checkout!")
-            Button(action: {
-                self.signIn.toggle()
-            }, label: {
-                Text("Sign in to Checkout")
-            }).sheet(isPresented: $signIn, content: {
-                SignInForm()
-            })
+            if !signIn {
+                Button(action: {
+                    self.signIn.toggle()
+                }, label: {
+                    Text("Sign in to Checkout")
+                }).sheet(isPresented: $signIn, content: {
+                    SignInForm()
+                })
+            } else {
+                Text(String(format: "$%.2f", total))
+                Button(action: {
+                    
+                }, label: {
+                    Image(systemName: "banknote")
+                    Text("Apple Pay")
+                })
+            }
         }.navigationTitle("Checkout")
     }
 }
@@ -32,7 +41,9 @@ struct SignInForm: View {
         VStack {
             TextField("Email", text: $email)
             SecureField("Password", text: $password)
-            Button(action: {}, label: {
+            Button(action: {
+                
+            }, label: {
                 Text("Submit")
             })
         }
