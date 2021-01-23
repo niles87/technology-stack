@@ -49,6 +49,7 @@ class Auth {
             semaphore.signal()
             if let error = error {
                 print("Error posting new user: \(error)")
+                return
             }
             if let response = response {
                 let res = response as! HTTPURLResponse
@@ -85,6 +86,10 @@ class Auth {
             semaphore.signal()
             if let error = error {
                 print("error \(error)")
+                return
+            }
+            if let data = data {
+                print(data)
             }
             if let response = response {
                 let res = response as! HTTPURLResponse
