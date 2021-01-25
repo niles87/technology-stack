@@ -9,8 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
-    @State var items = [Item(id: 0, name: "Apple Watch", price: 10.00, image: "applewatch", amount: 10), Item(id: 1, name: "Iphone", price: 9.99, image: "iphone", amount: 20), Item(id: 2, name: "Macbook Air", price: 5.00, image: "laptopcomputer", amount: 10), Item(id: 3, name: "Scanner", price: 7.00, image: "scanner", amount: 10), Item(id: 4, name: "TV", price: 30.00, image: "tv", amount: 10), Item(id: 5, name: "4k TV", price: 20.00, image: "4k.tv", amount: 20)]
-    @State var searchedItems = [Item(id: 0, name: "Apple Watch", price: 10.00, image: "applewatch", amount: 10), Item(id: 1, name: "Iphone", price: 9.99, image: "iphone", amount: 20), Item(id: 2, name: "Macbook Air", price: 5.00, image: "laptopcomputer", amount: 10), Item(id: 3, name: "Scanner", price: 7.00, image: "scanner", amount: 10), Item(id: 4, name: "TV", price: 30.00, image: "tv", amount: 10), Item(id: 5, name: "4k TV", price: 20.00, image: "4k.tv", amount: 20)]
+    @State var items = API.main.getItems()
+    @State var searchedItems = API.main.getItems()
+    //        [Item(id: 0, name: "Apple Watch", price: 10.00, image: "applewatch", amount: 10), Item(id: 1, name: "Iphone", price: 9.99, image: "iphone", amount: 20), Item(id: 2, name: "Macbook Air", price: 5.00, image: "laptopcomputer", amount: 10), Item(id: 3, name: "Scanner", price: 7.00, image: "scanner", amount: 10), Item(id: 4, name: "TV", price: 30.00, image: "tv", amount: 10), Item(id: 5, name: "4k TV", price: 20.00, image: "4k.tv", amount: 20)]
     @State var cart: [Item] = []
     var body: some View {
         NavigationView {
@@ -23,7 +24,7 @@ struct ContentView: View {
                                 destination: ItemView(cart: $cart, item: item),
                                 label: {
                                     VStack{
-                                        Image(systemName: item.image)
+                                        Image(systemName: item.name)
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
                                             .frame(width: 75, height: 75)
@@ -51,13 +52,12 @@ struct ContentView_Previews: PreviewProvider {
 struct ItemView: View {
     @Binding var cart: [Item]
     @State private var count = 0
-    var item: Item
+    var item: Itm
     var body: some View {
         ZStack {
             VStack {
                 NavBar(cart: $cart)
-                Spacer()
-                Image(systemName: item.image)
+                Image(systemName: item.name)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 300, height: 300)
@@ -68,17 +68,18 @@ struct ItemView: View {
                         .frame(width: 50)
                         .border(Color(.separator))
                     Button(action: {
-                        self.addToCart(item: Item(id: item.id, name: item.name, price: item.price, image: item.image, amount: count))
+                        self.addToCart(item: Item(id: item.id, name: item.name, price: item.price, image: item.name, amount: count))
                     }, label: {
                         Image(systemName: "cart.fill.badge.plus")
                     })
                 }
                 Text(item.name).font(.title)
                 Text(String(format: "$%.2f", item.price))
-                if item.amount < 10 {
-                    Text("Only \(item.amount) remaining.")
+                if item.available_stock < 10 {
+                    Text("Only \(item.available_stock) remaining.")
                 }
-                Text("Description")
+                Text(item.description)
+                Spacer()
             }
         }
         .navigationTitle(item.name)
