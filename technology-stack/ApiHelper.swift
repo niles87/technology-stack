@@ -21,15 +21,17 @@ struct ItemList: Codable {
 
 class API {
     
+    static var main = API()
+    
+    private init () {}
+    
     func getItems() -> [Itm] {
-        var items: [Itm] = []
         let semaphore = DispatchSemaphore(value: 0)
-        let url = URL(string: "")
-        guard let req = url else {
+        guard let req = URL(string: "http://127.0.0.1:5000/stock") else {
             return []
         }
+        var items: [Itm]!
         URLSession.shared.dataTask(with: req) { (data, response, error) in
-            semaphore.signal()
             guard let data = data else {
                 return
             }
@@ -40,17 +42,17 @@ class API {
             catch let error {
                 print("error: \(error)")
             }
-            
+            semaphore.signal()
         }.resume()
         
-        semaphore.wait()
+        _ = semaphore.wait(wallTimeout: .distantFuture)
         return items
     }
-    
+
     func updateStock(item: Item) -> Bool {
         var updated = false
         let semaphore = DispatchSemaphore(value: 0)
-        let url = URL(string: "")
+        let url = URL(string: "http://127.0.0.1:5000/stock/\(item.id)")
         var request = URLRequest(url: url!)
         let parameters: [String:Any] = [
             "id": item.id,
