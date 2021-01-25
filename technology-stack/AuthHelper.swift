@@ -27,7 +27,7 @@ class Auth {
     
     func newUser(user: User) -> Bool {
         var success = false
-        let url = URL(string: "")
+        let url = URL(string: "http://localhost:5000/auth/register")
         var request = URLRequest(url: url!)
         
         let parameters: [String: Any] = [
@@ -65,7 +65,7 @@ class Auth {
     
     func getUser(email: String, password: String) -> ExistingUser {
         var exUser = ExistingUser(email: "", name: "")
-        let url = URL(string: "")
+        let url = URL(string: "http://localhost:5000/auth/login")
         var request = URLRequest(url: url!)
         
         let parameters: [String:Any] = [

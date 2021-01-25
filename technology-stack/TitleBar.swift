@@ -12,8 +12,8 @@ struct TitleBar: View {
     @State private var isEditing = false
     @State private var openSearch = false
     @Binding var cart: [Item]
-    @Binding var itemList: [Item]
-    @Binding var searchedItems: [Item]
+    @Binding var itemList: [Itm]
+    @Binding var searchedItems: [Itm]
     var body: some View {
         HStack {
             Text("Tech Stack")
