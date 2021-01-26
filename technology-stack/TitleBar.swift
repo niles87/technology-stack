@@ -11,9 +11,9 @@ struct TitleBar: View {
     @State var search: String = ""
     @State private var isEditing = false
     @State private var openSearch = false
-    @Binding var cart: [Item]
-    @Binding var itemList: [Itm]
-    @Binding var searchedItems: [Itm]
+    @Binding var cart: [CartItem]
+    @Binding var itemList: [Item]
+    @Binding var searchedItems: [Item]
     var body: some View {
         HStack {
             Text("Tech Stack")
@@ -62,7 +62,7 @@ struct TitleBar: View {
 }
 
 struct NavBar: View {
-    @Binding var cart: [Item]
+    @Binding var cart: [CartItem]
     var body: some View {
         HStack{
             Text("Tech Stack")

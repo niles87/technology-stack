@@ -15,7 +15,6 @@
 		0BB26BDE25B1196D00239130 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB26BDD25B1196D00239130 /* ContentView.swift */; };
 		0BB26BE025B1196E00239130 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BB26BDF25B1196E00239130 /* Assets.xcassets */; };
 		0BB26BE325B1196E00239130 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BB26BE225B1196E00239130 /* Preview Assets.xcassets */; };
-		0BB26BEC25B119D000239130 /* Stock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB26BEB25B119D000239130 /* Stock.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +28,6 @@
 		0BB26BDF25B1196E00239130 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0BB26BE225B1196E00239130 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0BB26BE425B1196E00239130 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0BB26BEB25B119D000239130 /* Stock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +65,6 @@
 				0BB26BDF25B1196E00239130 /* Assets.xcassets */,
 				0BB26BE425B1196E00239130 /* Info.plist */,
 				0BB26BE125B1196E00239130 /* Preview Content */,
-				0BB26BEB25B119D000239130 /* Stock.swift */,
 				0BA3F45625B27717004778D7 /* TitleBar.swift */,
 				0B2DACD825B4FC4000DCA9FE /* CheckOut.swift */,
 				0B91621025B90B0200C5C529 /* AuthHelper.swift */,
@@ -157,7 +154,6 @@
 				0BB26BDE25B1196D00239130 /* ContentView.swift in Sources */,
 				0BB26BDC25B1196D00239130 /* technology_stackApp.swift in Sources */,
 				0B2DACD925B4FC4000DCA9FE /* CheckOut.swift in Sources */,
-				0BB26BEC25B119D000239130 /* Stock.swift in Sources */,
 				0B91621125B90B0200C5C529 /* AuthHelper.swift in Sources */,
 				0B39FAE025BC9439007D62C6 /* ApiHelper.swift in Sources */,
 			);
