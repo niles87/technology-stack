@@ -11,8 +11,7 @@ struct ContentView: View {
     private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     @State var items = API.main.getItems()
     @State var searchedItems = API.main.getItems()
-    //        [Item(id: 0, name: "Apple Watch", price: 10.00, image: "applewatch", amount: 10), Item(id: 1, name: "Iphone", price: 9.99, image: "iphone", amount: 20), Item(id: 2, name: "Macbook Air", price: 5.00, image: "laptopcomputer", amount: 10), Item(id: 3, name: "Scanner", price: 7.00, image: "scanner", amount: 10), Item(id: 4, name: "TV", price: 30.00, image: "tv", amount: 10), Item(id: 5, name: "4k TV", price: 20.00, image: "4k.tv", amount: 20)]
-    @State var cart: [Item] = []
+    @State var cart: [CartItem] = []
     var body: some View {
         NavigationView {
             VStack {
@@ -49,10 +48,17 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+struct CartItem {
+    var id: Int
+    var name: String
+    var price: Double
+    var amount: Int
+}
+
 struct ItemView: View {
-    @Binding var cart: [Item]
+    @Binding var cart: [CartItem]
     @State private var count = 0
-    var item: Itm
+    var item: Item
     var body: some View {
         ZStack {
             VStack {
@@ -68,7 +74,7 @@ struct ItemView: View {
                         .frame(width: 50)
                         .border(Color(.separator))
                     Button(action: {
-                        self.addToCart(item: Item(id: item.id, name: item.name, price: item.price, image: item.name, amount: count))
+                        self.addToCart(item: CartItem(id: item.id, name: item.name, price: item.price, amount: count))
                     }, label: {
                         Image(systemName: "cart.fill.badge.plus")
                     })
@@ -85,7 +91,7 @@ struct ItemView: View {
         .navigationTitle(item.name)
     }
     
-    func addToCart(item: Item) {
+    func addToCart(item: CartItem) {
         if item.amount > 0 {
             cart.append(item)
         }
@@ -93,7 +99,7 @@ struct ItemView: View {
 }
 
 struct CartView: View {
-    @Binding var cart: [Item]
+    @Binding var cart: [CartItem]
     var column: [GridItem] = Array(repeating: .init(.flexible()), count: 1)
     var body: some View {
         ScrollView {
@@ -101,13 +107,13 @@ struct CartView: View {
                 LazyVGrid (columns: column) {
                     ForEach(cart, id: \.self.id) { item in
                         HStack {
-                            Image(systemName: item.image)
+                            Image(systemName: item.name)
                             Text("\(item.amount)")
                             Text(item.name)
                             Text(String(format: "$%.2f", (Double(item.amount) * item.price)))
                             Spacer()
                             Button(action: {
-                                deleteItem()
+                                deleteItem(id: item.id)
                             }, label: {
                                 Text("X").font(.system(size: 15, weight: .heavy))
                             })
@@ -137,7 +143,8 @@ struct CartView: View {
         return total
     }
     
-    func deleteItem() {
+    func deleteItem(id: Int) {
         print("removing item")
     }
 }
+
