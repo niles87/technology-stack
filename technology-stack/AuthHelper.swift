@@ -14,7 +14,8 @@ struct User {
     var password: String
 }
 
-struct ExistingUser {
+struct ExistingUser: Codable {
+    var id: Int
     var email: String
     var name: String
 }
@@ -25,11 +26,10 @@ class Auth {
     
     private init () {}
     
-    func newUser(user: User) -> Bool {
-        var success = false
+    func newUser(user: User) -> ExistingUser {
         let url = URL(string: "http://localhost:5000/auth/register")
         var request = URLRequest(url: url!)
-        
+        var ruser: ExistingUser!
         let parameters: [String: Any] = [
             "name": "\(user.firstName) \(user.lastName)",
             "email": user.email,
@@ -38,33 +38,31 @@ class Auth {
         guard let jsonData = try?
                 JSONSerialization.data(withJSONObject: parameters, options: []) else {
             print("couldnt serialize jsonData")
-            return success
+            return ruser
         }
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = jsonData
         
         let semaphore = DispatchSemaphore(value: 0)
         URLSession.shared.dataTask(with: request) {(data, response, error) in
-            semaphore.signal()
-            if let error = error {
-                print("Error posting new user: \(error)")
+            guard let data = data else {
                 return
             }
-            if let response = response {
-                let res = response as! HTTPURLResponse
-                
-                if res.statusCode == 200 {
-                    success = true
-                }
+            do {
+                let res = try JSONDecoder().decode(ExistingUser.self, from: data)
+                ruser = res
+            } catch let error {
+                print(error)
             }
+            semaphore.signal()
         }.resume()
         semaphore.wait()
-        return success
+        return ruser
     }
     
     func getUser(email: String, password: String) -> ExistingUser {
-        var exUser = ExistingUser(email: "", name: "")
+        var exUser: ExistingUser!
         let url = URL(string: "http://localhost:5000/auth/login")
         var request = URLRequest(url: url!)
         
@@ -74,6 +72,7 @@ class Auth {
         ]
         
         guard let jsonData = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
+            print("json serialization failed")
             return exUser
         }
         
@@ -83,23 +82,16 @@ class Auth {
         
         let semaphore = DispatchSemaphore(value: 0)
         URLSession.shared.dataTask(with: request) {(data, response, error) in
-            semaphore.signal()
-            if let error = error {
-                print("error \(error)")
+            guard let data = data else {
                 return
             }
-            if let data = data {
-                print(data)
+            do {
+                let user = try JSONDecoder().decode(ExistingUser.self, from: data)
+                exUser = user
+            } catch let error {
+                print(error)
             }
-            if let response = response {
-                let res = response as! HTTPURLResponse
-                
-                if res.statusCode == 200 {
-                    print(response)
-                    exUser.name = ""
-                    exUser.email = ""
-                }
-            }
+            semaphore.signal()
         }.resume()
         
         semaphore.wait()
