@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Itm: Codable {
+struct Item: Codable {
     var id: Int
     var name: String
     var price: Double
@@ -16,7 +16,7 @@ struct Itm: Codable {
 }
 
 struct ItemList: Codable {
-    var results: [Itm]
+    var results: [Item]
 }
 
 class API {
@@ -25,12 +25,12 @@ class API {
     
     private init () {}
     
-    func getItems() -> [Itm] {
+    func getItems() -> [Item] {
         let semaphore = DispatchSemaphore(value: 0)
         guard let req = URL(string: "http://127.0.0.1:5000/stock") else {
             return []
         }
-        var items: [Itm]!
+        var items: [Item]!
         URLSession.shared.dataTask(with: req) { (data, response, error) in
             guard let data = data else {
                 return
@@ -49,10 +49,10 @@ class API {
         return items
     }
 
-    func updateStock(item: Item) -> Bool {
+    func updateStock(item: CartItem) -> Bool {
         var updated = false
         let semaphore = DispatchSemaphore(value: 0)
-        let url = URL(string: "http://127.0.0.1:5000/stock/\(item.id)")
+        let url = URL(string: "http://127.0.0.1:5000/stock")
         var request = URLRequest(url: url!)
         let parameters: [String:Any] = [
             "id": item.id,
@@ -66,7 +66,6 @@ class API {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = jsonData
         URLSession.shared.dataTask(with: request) {(data, response, error) in
-            semaphore.signal()
             if let error = error {
                 print(error)
                 return
@@ -78,6 +77,7 @@ class API {
                     updated = true
                 }
             }
+            semaphore.signal()
         }.resume()
         semaphore.wait()
         
