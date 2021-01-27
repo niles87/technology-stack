@@ -13,13 +13,16 @@ struct CheckoutView: View {
     var body: some View {
         VStack {
             if !signIn {
-                Button(action: {
-                    self.signIn.toggle()
-                }, label: {
-                    Text("Sign in to Checkout")
-                }).sheet(isPresented: $signIn, content: {
-                    SignInForm()
-                })
+                HStack {
+                    Button(action: {
+                        self.signIn.toggle()
+                    }, label: {
+                        Text("Sign in to Checkout")
+                    })
+                    Button(action: {}, label: {
+                        Text("New Member")
+                    })
+                }
             } else {
                 Text(String(format: "$%.2f", total))
                 Button(action: {
@@ -34,6 +37,7 @@ struct CheckoutView: View {
 }
 
 struct SignInForm: View {
+    @Environment(\.presentationMode) var presentation
     @State private var email = ""
     @State private var password = ""
     
@@ -47,5 +51,13 @@ struct SignInForm: View {
                 Text("Submit")
             })
         }
+    }
+    
+    func checkUser(email: String, password: String) -> Bool {
+        let user = Auth.main.getUser(email: email, password: password)
+        if user.email == email {
+            return true
+        }
+        return false
     }
 }
