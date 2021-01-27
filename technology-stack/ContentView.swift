@@ -58,6 +58,7 @@ struct CartItem {
 struct ItemView: View {
     @Binding var cart: [CartItem]
     @State private var count = 0
+    @State private var showAlert = false
     var item: Item
     var body: some View {
         ZStack {
@@ -74,9 +75,13 @@ struct ItemView: View {
                         .frame(width: 50)
                         .border(Color(.separator))
                     Button(action: {
-                        self.addToCart(item: CartItem(id: item.id, name: item.name, price: item.price, amount: count))
+                        if !self.addToCart(item: CartItem(id: item.id, name: item.name, price: item.price, amount: count)) {
+                            showAlert = true
+                        }
                     }, label: {
                         Image(systemName: "cart.fill.badge.plus")
+                    }).alert(isPresented: $showAlert, content: {
+                        Alert(title: Text("Need an amount greater than zero"))
                     })
                 }
                 Text(item.name).font(.title)
@@ -91,9 +96,26 @@ struct ItemView: View {
         .navigationTitle(item.name)
     }
     
-    func addToCart(item: CartItem) {
+    private func addToCart(item: CartItem) -> Bool {
         if item.amount > 0 {
-            cart.append(item)
+            for i in cart {
+                if i.id == item.id {
+                    updateItemInCart(id: i.id, amount: item.amount)
+                    return true
+                }
+            }
+            self.cart.append(item)
+            return true
+        }
+        return false
+    }
+    
+    private func updateItemInCart(id: Int, amount: Int) {
+        for (idx, item) in cart.enumerated() {
+            if id == item.id {
+                self.cart[idx].amount += amount
+                return
+            }
         }
     }
 }
@@ -144,7 +166,12 @@ struct CartView: View {
     }
     
     func deleteItem(id: Int) {
-        print("removing item")
+        
+        for (idx, item) in cart.enumerated() {
+            if item.id == id {
+                self.cart.remove(at: idx)
+            }
+        }
     }
 }
 
