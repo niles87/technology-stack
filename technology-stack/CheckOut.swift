@@ -9,30 +9,49 @@ import SwiftUI
 
 struct CheckoutView: View {
     @State private var signIn = false
+    @State private var newMember = false
     var total: Double
     var body: some View {
         VStack {
-            if !signIn {
-                HStack {
-                    Button(action: {
-                        self.signIn.toggle()
-                    }, label: {
-                        Text("Sign in to Checkout")
-                    })
-                    Button(action: {}, label: {
-                        Text("New Member")
-                    })
-                }
-            } else {
-                Text(String(format: "$%.2f", total))
+            HStack {
                 Button(action: {
-                    
+                    self.signIn.toggle()
                 }, label: {
-                    Image(systemName: "banknote")
-                    Text("Apple Pay")
+                    Text("Sign in to Checkout")
+                }).fullScreenCover(isPresented: $signIn, content: SignInForm.init)
+                Button(action: {
+                    self.newMember.toggle()
+                }, label: {
+                    Text("New Member")
                 })
             }
+            
         }.navigationTitle("Checkout")
+    }
+}
+
+struct NewMemberForm: View {
+    @State private var firstName = ""
+    @State private var lastName = ""
+    @State private var email = ""
+    @State private var password = ""
+    var body: some View {
+        VStack {
+            TextField("First Name", text: $firstName)
+            TextField("Last Name", text: $lastName)
+            TextField("Email", text: $email)
+            SecureField("Password", text: $password)
+            Button(action: {
+                self.addUser(firstName: $firstName, lastName: $lastName, email: $email, password: $password)
+            }, label: {
+                /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
+            })
+        }
+    }
+    
+    func addUser(firstName: String, lastName: String, email: String, password: String) {
+        let user = Auth.main.newUser(user: User(firstName: firstName, lastName: lastName, email: email, password: password))
+        print(user)
     }
 }
 
@@ -53,11 +72,11 @@ struct SignInForm: View {
         }
     }
     
-    func checkUser(email: String, password: String) -> Bool {
+    private func checkUser(email: String, password: String) {
         let user = Auth.main.getUser(email: email, password: password)
         if user.email == email {
-            return true
+            
         }
-        return false
+        
     }
 }
