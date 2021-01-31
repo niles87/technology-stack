@@ -33,6 +33,7 @@ struct CheckoutView: View {
 }
 
 struct NewMemberForm: View {
+    @Environment(\.presentationMode) var present
     @State private var firstName = ""
     @State private var lastName = ""
     @State private var email = ""
@@ -59,7 +60,7 @@ struct NewMemberForm: View {
 }
 
 struct SignInForm: View {
-    @Environment(\.presentationMode) var presentation
+    @Environment(\.presentationMode) var present
     @State private var email = ""
     @State private var password = ""
   
