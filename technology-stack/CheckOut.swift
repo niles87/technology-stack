@@ -10,6 +10,8 @@ import SwiftUI
 struct CheckoutView: View {
     @State private var signIn = false
     @State private var newMember = false
+    @State private var isSignedIn = false
+
     var total: Double
     var body: some View {
         VStack {
@@ -23,7 +25,7 @@ struct CheckoutView: View {
                     self.newMember.toggle()
                 }, label: {
                     Text("New Member")
-                })
+                }).fullScreenCover(isPresented: $newMember, content: NewMemberForm.init)
             }
             
         }.navigationTitle("Checkout")
@@ -35,6 +37,7 @@ struct NewMemberForm: View {
     @State private var lastName = ""
     @State private var email = ""
     @State private var password = ""
+
     var body: some View {
         VStack {
             TextField("First Name", text: $firstName)
@@ -42,16 +45,16 @@ struct NewMemberForm: View {
             TextField("Email", text: $email)
             SecureField("Password", text: $password)
             Button(action: {
-                self.addUser(firstName: $firstName, lastName: $lastName, email: $email, password: $password)
+            
             }, label: {
-                /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
+                Text("Submit")
             })
         }
     }
     
     func addUser(firstName: String, lastName: String, email: String, password: String) {
-        let user = Auth.main.newUser(user: User(firstName: firstName, lastName: lastName, email: email, password: password))
-        print(user)
+        let res = Auth.main.newUser(user: User(firstName: firstName, lastName: lastName, email: email, password: password))
+        print(res)
     }
 }
 
@@ -59,7 +62,7 @@ struct SignInForm: View {
     @Environment(\.presentationMode) var presentation
     @State private var email = ""
     @State private var password = ""
-    
+  
     var body: some View {
         VStack {
             TextField("Email", text: $email)
@@ -73,10 +76,8 @@ struct SignInForm: View {
     }
     
     private func checkUser(email: String, password: String) {
-        let user = Auth.main.getUser(email: email, password: password)
-        if user.email == email {
-            
-        }
+        let res = Auth.main.getUser(email: email, password: password)
+        print(res)
         
     }
 }
